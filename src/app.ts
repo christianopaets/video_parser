@@ -36,7 +36,7 @@ function startSchedule(): void {
       fromPromise(getMongoManager().find(Video)),
       webScrappingService.getWebsiteData()
     ])
-      .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'thumbnail')))
+      .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'link')))
       .subscribe(video => getMongoManager().save(video));
   });
 }
