@@ -1,0 +1,45 @@
+{
+  "name": "video-player-backend",
+  "version": "1.0.0",
+  "description": "This application parse websites for new videos",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "npm run build -- -w",
+    "run": "npm run build && node ./dist/app.js",
+    "run-watch": "npm run watch & nodemon ./dist/app.js"
+  },
+  "author": "christianopaet@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
+    "express": "^4.17.1",
+    "jsdom": "^16.4.0",
+    "lodash": "^4.17.20",
+    "mongodb": "^3.6.1",
+    "multer": "^1.4.2",
+    "node-cron": "^2.0.3",
+    "reflect-metadata": "^0.1.13",
+    "routing-controllers": "^0.9.0-alpha.6",
+    "rxjs": "^6.6.3",
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.25"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/body-parser": "^1.19.0",
+    "@types/cheerio": "^0.22.21",
+    "@types/express": "^4.17.8",
+    "@types/jsdom": "^16.2.4",
+    "@types/lodash": "^4.14.161",
+    "@types/multer": "^1.4.4",
+    "@types/node": "^14.6.4",
+    "@types/node-cron": "^2.0.3",
+    "nodemon": "^2.0.4",
+    "typescript": "^4.0.2"
+  }
+}
