@@ -1,10 +1,10 @@
-import {Column, Entity, ObjectIdColumn} from 'typeorm/index';
+import {Column, Entity, ObjectID, ObjectIdColumn} from 'typeorm/index';
 
 @Entity()
 export class Video {
 
   @ObjectIdColumn()
-  id: number;
+  id: ObjectID;
 
   @Column()
   season: string;

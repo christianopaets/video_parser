@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import {createExpressServer} from "routing-controllers";
 import {VideoController} from './controllers/video.controller';
-import {useContainer} from 'routing-controllers/container';
+import {useContainer as useRoutingControllerContainer} from 'routing-controllers/container';
 import {Container} from 'typedi';
-import {createConnection, getMongoManager} from 'typeorm/index';
+import {createConnection, getMongoManager, useContainer as useTypeormContainer} from 'typeorm/index';
 import {schedule} from 'node-cron';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {map} from 'rxjs/operators';
@@ -19,13 +19,14 @@ const expressConfig: RoutingControllersOptions = {
   ]
 }
 
-useContainer(Container);
+useRoutingControllerContainer(Container);
+useTypeormContainer(Container);
 
 fromPromise(createConnection())
   .pipe(map(() => createExpressServer(expressConfig)))
   .subscribe(app => {
     startSchedule();
-    app.listen(process.env.PORT ||  3100);
+    app.listen(process.env.PORT || 3100);
   });
 
 function startSchedule(): void {
@@ -35,7 +36,7 @@ function startSchedule(): void {
       fromPromise(getMongoManager().find(Video)),
       webScrappingService.getWebsiteData()
     ])
-      .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'url')))
-      .subscribe(video => getMongoManager().save(video))
+      .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'thumbnail')))
+      .subscribe(video => getMongoManager().save(video));
   });
 }
