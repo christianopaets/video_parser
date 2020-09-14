@@ -16,7 +16,11 @@ import differenceBy from 'lodash/differenceBy';
 const expressConfig: RoutingControllersOptions = {
   controllers: [
     VideoController
-  ]
+  ],
+  cors: {
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  }
 }
 
 useRoutingControllerContainer(Container);
@@ -36,7 +40,10 @@ function startSchedule(): void {
       fromPromise(getMongoManager().find(Video)),
       webScrappingService.getWebsiteData()
     ])
-      .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'link')))
+      .pipe(map(([savedVideo, newVideo]) => {
+        console.log(savedVideo, newVideo);
+        return differenceBy(newVideo, savedVideo, 'link')
+      }))
       .subscribe(video => getMongoManager().save(video));
   });
 }
