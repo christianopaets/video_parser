@@ -1,6 +1,6 @@
-import {Get, JsonController} from 'routing-controllers/index';
+import {Get, JsonController, QueryParam} from 'routing-controllers';
 import {WebScrappingService} from '../services/web-scrapping.service';
-import {MongoRepository} from 'typeorm/index';
+import {MongoRepository} from 'typeorm';
 import {Video} from '../entity/Video';
 import {InjectRepository} from 'typeorm-typedi-extensions';
 
@@ -12,7 +12,13 @@ export class VideoController {
   }
 
   @Get()
-  getVideoList(): Promise<Video[]> {
-    return this.videoRepository.find();
+  getVideoList(@QueryParam('page') page: number, @QueryParam('offset') offset: number = 9): Promise<Video[]> {
+    return this.videoRepository.find({
+      // order: {
+      //   date: 'DESC'
+      // },
+      // take: offset,
+      // skip: offset * (page - 1)
+    });
   }
 }

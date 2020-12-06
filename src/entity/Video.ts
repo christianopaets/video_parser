@@ -1,4 +1,4 @@
-import {Column, Entity, ObjectID, ObjectIdColumn} from 'typeorm/index';
+import {Column, Entity, ObjectID, ObjectIdColumn, PrimaryColumn} from 'typeorm/index';
 
 @Entity()
 export class Video {

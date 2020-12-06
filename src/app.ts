@@ -31,19 +31,21 @@ fromPromise(createConnection())
   .subscribe(app => {
     startSchedule();
     app.listen(process.env.PORT || 3100);
+    scrap();
   });
 
 function startSchedule(): void {
   schedule("0,15,30,45 * * * *", () => {
-    const webScrappingService: WebScrappingService = Container.get(WebScrappingService);
-    forkJoin([
-      fromPromise(getMongoManager().find(Video)),
-      webScrappingService.getWebsiteData()
-    ])
-      .pipe(map(([savedVideo, newVideo]) => {
-        console.log(savedVideo, newVideo);
-        return differenceBy(newVideo, savedVideo, 'link')
-      }))
-      .subscribe(video => getMongoManager().save(video));
+    scrap();
   });
+}
+
+function scrap(): void {
+  const webScrappingService: WebScrappingService = Container.get(WebScrappingService);
+  forkJoin([
+    fromPromise(getMongoManager().find(Video)),
+    webScrappingService.getWebsiteData()
+  ])
+    .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'link')))
+    .subscribe(video => getMongoManager().save(video));
 }

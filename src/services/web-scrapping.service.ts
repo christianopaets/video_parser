@@ -18,14 +18,20 @@ export class WebScrappingService {
     return this._getPageData(this._url)
       .pipe(switchMap(res => this.getNewVideosCard(res)))
       .pipe(map(res => this.getNewVideoObject(res)))
-      .pipe(switchMap(list => this._scrapEachVideo(list)));
+      .pipe(switchMap(list => this._scrapEachVideo(list)))
+      .pipe(map(list => list.filter(video => video.url)));
   }
 
   getNewVideosCard(data: CheerioStatic): Observable<Cheerio> {
     return of(data)
       .pipe(map(res => res('div[data-collection="new_videos"] .preview-item')))
       .pipe(map(videos => {
-        return videos.filter(index => cheerio(videos[index]).find('.category').text().split('|').length === 4);
+        return videos.filter(index => {
+          const page = cheerio(videos[index]);
+          const allInfo = page.find('.category').text().split('|').length === 4;
+          const partial = page.find('.title').text().match(/Частина \d+/);
+          return allInfo || !!partial;
+        });
       }));
   }
 
@@ -35,10 +41,17 @@ export class WebScrappingService {
       const $ = cheerio(element);
       const title = $.find('.category').text().split('|').map(res => res.trim());
       const video = new Video();
-      video.season = title[3];
-      video.series = title[0];
-      video.part = title[1];
-      video.date = title[2];
+      if (title.length === 4) {
+        video.season = title[3];
+        video.series = title[0];
+        video.part = title[1];
+        video.date = title[2];
+      } else {
+        video.season = title[2];
+        video.series = title[0];
+        video.part = $.find('.title').text().match(/Частина \d+/)[0];
+        video.date = title[1];
+      }
       video.link = $.find('.preview-link').attr('href');
       arr.push(video);
     });
