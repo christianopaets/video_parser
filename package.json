@@ -2,12 +2,12 @@
   "name": "video-player-backend",
   "version": "1.0.0",
   "description": "This application parse websites for new videos",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "npm run build -- -w",
-    "run": "npm run build && node ./dist/app.js",
-    "run-watch": "npm run watch & nodemon ./dist/app.js"
+    "start": "npm run build && npm run start",
+    "run-watch": "npm run watch & nodemon ./dist/index.js"
   },
   "author": "christianopaet@gmail.com",
   "license": "ISC",

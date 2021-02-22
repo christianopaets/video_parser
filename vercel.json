@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "env": {
+    "TYPEORM_CONNECTION": "mongodb",
+    "TYPEORM_DRIVER_EXTRA": "{ \"useNewUrlParser\": true, \"w\": \"majority\", \"useUnifiedTopology\": true}",
+    "TYPEORM_ENTITIES": "dist/entity/**/*.js",
+    "TYPEORM_LOGGING": "true",
+    "TYPEORM_SYNCHRONIZE": "true",
+    "TYPEORM_URL": "mongodb+srv://video_data_base_user:9Z1fG33WtmphaR0n@damkaracluster.jsg5b.mongodb.net/video_data_base"
+  },
+  "builds": [
+    {
+      "src": "dist/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/index.js"
+    }
+  ]
+}

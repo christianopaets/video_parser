@@ -12,10 +12,12 @@ import {WebScrappingService} from './services/web-scrapping.service';
 import {Video} from './entity/Video';
 import {forkJoin} from 'rxjs';
 import differenceBy from 'lodash/differenceBy';
+import {MainController} from './controllers/main.controller';
 
 const expressConfig: RoutingControllersOptions = {
   controllers: [
-    VideoController
+    VideoController,
+    MainController
   ],
   cors: {
     origin: "*",

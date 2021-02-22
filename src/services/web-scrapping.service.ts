@@ -29,7 +29,7 @@ export class WebScrappingService {
         return videos.filter(index => {
           const page = cheerio(videos[index]);
           const allInfo = page.find('.category').text().split('|').length === 4;
-          const partial = page.find('.title').text().match(/Частина \d+/);
+          const partial = page.find('.title').text().match(/(Часть|Частина) \d+/);
           return allInfo || !!partial;
         });
       }));
@@ -49,7 +49,7 @@ export class WebScrappingService {
       } else {
         video.season = title[2];
         video.series = title[0];
-        video.part = $.find('.title').text().match(/Частина \d+/)[0];
+        video.part = $.find('.title').text().match(/(Часть|Частина) \d+/)[0];
         video.date = title[1];
       }
       video.link = $.find('.preview-link').attr('href');
@@ -85,7 +85,7 @@ export class WebScrappingService {
         video.url = res.video[0].media.find(item => item.quality === 'mq').url;
         return video;
       })).pipe(catchError(err => {
-        console.log(err);
+        console.log(err, video);
         return of(video);
       }));
   }

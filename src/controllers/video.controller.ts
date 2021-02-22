@@ -14,11 +14,11 @@ export class VideoController {
   @Get()
   getVideoList(@QueryParam('page') page: number, @QueryParam('offset') offset: number = 9): Promise<Video[]> {
     return this.videoRepository.find({
-      // order: {
-      //   date: 'DESC'
-      // },
-      // take: offset,
-      // skip: offset * (page - 1)
+      order: {
+        _id: -1
+      },
+      take: offset,
+      skip: offset * (page - 1)
     });
   }
 }

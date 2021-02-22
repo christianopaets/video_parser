@@ -1,7 +1,9 @@
-import {Column, Entity, ObjectID, ObjectIdColumn, PrimaryColumn} from 'typeorm/index';
+import {Column, Entity, ObjectID, ObjectIdColumn} from 'typeorm';
 
 @Entity()
 export class Video {
+
+  _id: ObjectID;
 
   @ObjectIdColumn()
   id: ObjectID;
