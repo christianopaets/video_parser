@@ -19,7 +19,7 @@ export class WebScrappingService {
       .pipe(switchMap(res => this.getNewVideosCard(res)))
       .pipe(map(res => this.getNewVideoObject(res)))
       .pipe(switchMap(list => this._scrapEachVideo(list)))
-      .pipe(map(list => list.filter(video => video.url)));
+      .pipe(map(list => list.filter(video => /https:\/\//.test(video.url))));
   }
 
   getNewVideosCard(data: CheerioStatic): Observable<Cheerio> {
