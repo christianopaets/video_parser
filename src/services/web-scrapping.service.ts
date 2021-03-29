@@ -82,7 +82,7 @@ export class WebScrappingService {
       .pipe(map(res => {
         video.thumbnail = res.poster;
         video.preview = res.poster;
-        video.url = res.video[0].media.find(item => item.quality === 'mq').url;
+        video.url = res.video[0].media.find(item => item.quality === 'mq' || item.quality === 'auto').url;
         return video;
       })).pipe(catchError(err => {
         console.log(err, video);
