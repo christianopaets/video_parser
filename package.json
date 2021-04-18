@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "npm run build -- -w",
-    "start": "npm run build && npm run start",
+    "start": "npm run build && node ./dist/index.js",
     "run-watch": "npm run watch & nodemon ./dist/index.js"
   },
   "author": "christianopaet@gmail.com",

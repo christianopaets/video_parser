@@ -1,8 +1,12 @@
-import {Get, JsonController, QueryParam} from 'routing-controllers';
+import {Get, JsonController, Post, QueryParam} from 'routing-controllers';
 import {WebScrappingService} from '../services/web-scrapping.service';
-import {MongoRepository} from 'typeorm';
+import {getMongoManager, MongoRepository} from 'typeorm';
 import {Video} from '../entity/Video';
 import {InjectRepository} from 'typeorm-typedi-extensions';
+import {forkJoin} from 'rxjs';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {map, switchMap} from 'rxjs/operators';
+import differenceBy from 'lodash/differenceBy';
 
 @JsonController('/videos')
 export class VideoController {
@@ -23,5 +27,16 @@ export class VideoController {
       }),
       total: await this.videoRepository.count()
     }
+  }
+
+  @Post()
+  scrapVideos(): Promise<Video[]> {
+    return forkJoin([
+      fromPromise(getMongoManager().find(Video)),
+      this.webScrappingService.getWebsiteData()
+    ])
+      .pipe(map(([savedVideo, newVideo]) => differenceBy(newVideo, savedVideo, 'link')))
+      .pipe(switchMap(video => this.videoRepository.save(video)))
+      .toPromise();
   }
 }
