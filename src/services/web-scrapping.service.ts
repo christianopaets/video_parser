@@ -78,7 +78,7 @@ export class WebScrappingService {
     const hash = link.searchParams.get('hash');
     const referer = video.link;
     // video.segmentsUrl = link.searchParams.get('file');
-    return this.http.get<IApiVideo>(`https://vcms-api2.starlight.digital/player-api/${hash}?referer=${referer}`)
+    return this.http.get<IApiVideo>(`https://vcms-api2.starlight.digital/player-api/${hash}?referer=${referer}&lang=ua`)
       .pipe(map(res => {
         video.thumbnail = res.poster;
         video.preview = res.poster;
